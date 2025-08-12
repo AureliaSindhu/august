@@ -68,7 +68,7 @@ export default function Nav() {
                 role="region"
                 aria-label="Now Playing"
                 className={[
-                "flex items-center gap-3 rounded-full border border-white/10 bg-black/80 px-6 py-2 text-white shadow-xl backdrop-blur-xl transition-all duration-300",
+                "flex items-center gap-3 rounded-full border border-white/10 bg-black/80 px-6 py-2 text-white shadow-xl backdrop-blur-sm transition-all duration-300",
                 expanded ? "w-[360px]" : "w-[180px]",
                 ].join(" ")}
             >
