@@ -3,8 +3,10 @@
 import GlassButton from "./ui/glassBtn";
 import { MOODS } from "@/lib/mood";
 import { CometCard } from "./ui/comet-card";
+import { useRouter } from "next/navigation";
 
 export default function GalleryGrid() {
+    const router = useRouter();
     return (
         <div className="w-full max-w-6xl mx-auto px-3 sm:px-4 flex flex-col items-center">
             <h1 className="text-2xl font-bold mb-4 text-center"><span className="italic">myAugustMood</span> Gallery</h1>
@@ -32,7 +34,7 @@ export default function GalleryGrid() {
                     </CometCard>
                 ))}
             </div>
-            <GlassButton href="/" className="mt-8">
+            <GlassButton onClick={() => router.push("/")} className="mt-8">
                 Home
             </GlassButton>
         </div>
