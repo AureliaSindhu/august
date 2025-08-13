@@ -1,11 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
 import { MOODS, type MoodKey } from "@/lib/mood";
 
 type ResultCardProps = {
     text?: string;
     mood?: MoodKey | string;
+    moodScore?: number | string;
     className?: string;
     heightClassName?: string;
     widthClassName?: string;
@@ -19,22 +21,44 @@ function normalizeKey(k?: string): MoodKey {
     return MOODS[key] ? key : DEFAULT_MOOD;
 }
 
+function normalizeScore(s?: number | string): number | null {
+    if (s === undefined || s === null) return null;
+
+    if (typeof s === "number") {
+        const trimmed = s.toString().trim();
+        if (trimmed === "") return null;
+        const cleaned = trimmed.replace(/%/g, "").replace(",", ".");
+        const n = Number(cleaned);
+        if (!Number.isFinite(n)) return null;
+        const pct = n <= 1 ? n * 100 : n;
+        return Math.max(0, Math.min(100, pct));
+    }
+    const pct = Number(s) <= 1 ? Number(s) * 100 : Number(s);
+    return Math.max(0, Math.min(100, pct));
+}
+
 function normalizePalette(p?: string[]) {
     const fb = ["#1f2937", "#374151", "#0b1220", "#0a0f1f"];
     const out = Array.isArray(p) ? [...p] : [];
-    while (out.length < 4) out.push(fb[out.length] ?? fb[0] as string);
+    while (out.length < 4) out.push(fb[out.length] ?? (fb[0] as string));
     return out.slice(0, 4) as [string, string, string, string];
 }
 
 export default function ResultCard({
     text = "",
-    mood,
+    mood: propMood,
+    moodScore: propMoodScore,
     className = "",
     heightClassName = "h-[520px]",
     widthClassName = "w-full max-w-md",
     id = "rescard",
     ...rest
-}: ResultCardProps) {
+    }: ResultCardProps) {
+    const searchParams = useSearchParams();
+
+    const urlMood = searchParams.get("mood");
+    const mood = propMood || urlMood || DEFAULT_MOOD;
+
     const moodKey = normalizeKey(mood);
     const cfg = MOODS[moodKey];
     const [p0, p1, p2, p3] = normalizePalette(cfg.palette);
@@ -44,19 +68,25 @@ export default function ResultCard({
         `radial-gradient(circle at 70% 70%, ${p1}, transparent 60%),` +
         `linear-gradient(135deg, ${p2}, ${p3})`;
 
+    const normalized = normalizeScore(propMoodScore);
+    const scoreLabel = normalized !== null ? `(${Math.round(normalized)}%)` : "";
+
     return (
         <div
-        id={id}
-        data-mood={moodKey}
-        className={[
-            widthClassName,
-            heightClassName,
-            "rounded-3xl relative overflow-hidden",
-            "shadow-[0_20px_60px_rgba(0,0,0,.25)]",
-            className,
-        ].filter(Boolean).join(" ")}
-        style={{ backgroundImage }}
-        {...rest}
+            id={id}
+            data-mood={moodKey}
+            data-score={normalized ? String(normalized) : undefined}
+            className={[
+                widthClassName,
+                heightClassName,
+                "rounded-3xl relative overflow-hidden",
+                "shadow-[0_20px_60px_rgba(0,0,0,.25)]",
+                className,
+            ]
+                .filter(Boolean)
+                .join(" ")}
+            style={{ backgroundImage }}
+            {...rest}
         >
         {/* noise */}
         <div
@@ -71,12 +101,14 @@ export default function ResultCard({
         {/* content */}
         <div className="absolute inset-0 flex flex-col items-center justify-end p-6 text-white text-center drop-shadow">
             <div className="uppercase tracking-wide text-xs opacity-80 mb-2">
-            {cfg.label}
+            {cfg.label} {scoreLabel}
             </div>
             <div className="font-serif text-2xl leading-snug">
             {text || cfg.caption}
             </div>
-            <div className="mt-4 text-[10px] opacity-80">#MyAugustMood • aacode</div>
+            <div className="mt-4 text-[10px] opacity-80">
+            #MyAugustMood • aacode
+            </div>
         </div>
         </div>
     );
