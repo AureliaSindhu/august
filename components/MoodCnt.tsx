@@ -21,19 +21,16 @@ export default function MoodContent() {
         e?.preventDefault();
 
         if (!isValid) {
-        setError(len === 0 ? "Please enter a mood." : `Keep it ≤ ${MAX_LEN} characters.`);
-        inputRef.current?.focus();
-        return;
+            setError(len === 0 ? "Please enter a mood." : `Keep it ≤ ${MAX_LEN} characters.`);
+            inputRef.current?.focus();
+            return;
         }
 
         setError(null);
         setSubmitting(true);
         try {
         const { mood } = scoreMood(moodInput.trim());
-        const q = new URLSearchParams({
-            text: moodInput.trim(),
-            mood, // optional but handy on the result page
-        }).toString();
+        const q = new URLSearchParams({ mood }).toString();
         router.push(`/result?${q}`);
         } finally {
         setSubmitting(false);
@@ -46,9 +43,9 @@ export default function MoodContent() {
                 <h1 className="mx-auto max-w-2xl text-5xl font-semibold tracking-tight sm:text-6xl">
                     #myAugustMood
                 </h1>
-                <p className="mx-auto m-4 max-w-xl text-sm text-white/70 sm:text-base">
+                {/* <p className="mx-auto m-4 max-w-xl text-sm text-white/70 sm:text-base">
                     Tell me how August feels and we&apos;ll turn it into something dreamy.
-                </p>
+                </p> */}
 
                 <div className="mx-auto mt-10 flex w-full max-w-2xl flex-col overflow-hidden rounded-[16px] border border-white/10 bg-[#1F2121]/80 backdrop-blur">
                     <div className="grid gap-0 md:grid-cols-2">

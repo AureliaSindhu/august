@@ -50,6 +50,6 @@ export function scoreMood(raw: string): {
     })
 
     let best = (Object.keys(scores) as MoodKey[]).sort((a, b) => scores[b] - scores[a])[0]
-    if (!raw.trim()) best = 'BITTERSWEET'
-    return { mood: best ?? 'BITTERSWEET', scores }
+    if (!raw.trim()) best = 'bittersweet'
+    return { mood: best ?? 'bittersweet', scores }
 }

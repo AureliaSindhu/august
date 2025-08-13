@@ -1,9 +1,9 @@
 export type MoodKey =
-    | 'NOSTALGIC_SUMMER'
-    | 'BITTERSWEET'
-    | 'MELANCHOLY_TWILIGHT'
-    | 'SUN_DRENCHED_JOY'
-    | 'LATE_NIGHT_LONGING';
+    | 'nostalgic_summer'
+    | 'bittersweet'
+    | 'melancholy_twilight'
+    | 'sun_drenched_joy'
+    | 'late_night_longing';
 
 export type MoodCfg = {
     label: string;
@@ -15,7 +15,7 @@ export type MoodCfg = {
 };
 
 export const MOODS: Record<MoodKey, MoodCfg> = {
-    NOSTALGIC_SUMMER: {
+    nostalgic_summer: {
         label: 'Nostalgic Summer',
         palette: ['#F8E3C3','#F7C59F','#EFA8A4','#C9D8C5'],
         caption: 'August felt warm, faded, and almost remembered.',
@@ -26,7 +26,7 @@ export const MOODS: Record<MoodKey, MoodCfg> = {
         emojis: { '🕰️':3, '🌅':2, '📷':2, '🍑':1 },
         weight: 1.0
     },
-    BITTERSWEET: {
+    bittersweet: {
         label: 'Bittersweet / Fleeting',
         palette: ['#F6E7F7','#D7BCE8','#9DBAD5','#7A8BA3'],
         caption: 'Sweet, short, and slipping through my fingers.',
@@ -37,7 +37,7 @@ export const MOODS: Record<MoodKey, MoodCfg> = {
         emojis: { '⏳':2,'💫':2,'🌥️':1 },
         weight: 1.1
     },
-    MELANCHOLY_TWILIGHT: {
+    melancholy_twilight: {
         label: 'Melancholy Twilight',
         palette: ['#0B1D3A','#224C77','#516F9C','#9FB7D3'],
         caption: 'Blue hour, long sighs, quiet streets.',
@@ -48,7 +48,7 @@ export const MOODS: Record<MoodKey, MoodCfg> = {
         emojis: { '🌌':2,'🥀':2,'💤':1 },
         weight: 1.2
     },
-    SUN_DRENCHED_JOY: {
+    sun_drenched_joy: {
         label: 'Sun‑drenched Joy',
         palette: ['#FFF3B0','#FEC89A','#F4978E','#F08080'],
         caption: 'Loud laugh, bright light, golden August.',
@@ -59,7 +59,7 @@ export const MOODS: Record<MoodKey, MoodCfg> = {
         emojis: { '☀️':2,'✨':1,'😄':1 },
         weight: 0.9
     },
-    LATE_NIGHT_LONGING: {
+    late_night_longing: {
         label: 'Late‑night Longing',
         palette: ['#1A1423','#372549','#774C60','#B75D69'],
         caption: 'Missed calls. Open windows. Not over it.',
