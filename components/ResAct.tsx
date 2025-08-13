@@ -6,24 +6,86 @@ import { Star, RotateCcw, FolderOpen, Download } from "lucide-react";
 import GlassButton from "./ui/glassBtn";
 import RatingPopup from "./RatingPopup";
 
-async function downloadResCard() {
+async function captureResCardBlob(): Promise<Blob | null> {
   const node = document.getElementById("rescard");
   if (!node) {
-    alert("Couldn't find the card to download.");
-    return;
+    alert("Couldn't find the card to share.");
+    return null;
   }
-  const { toPng } = await import("html-to-image");
-  const dataUrl = await toPng(node, {
+  const { toBlob } = await import("html-to-image");
+  const blob = await toBlob(node, {
     cacheBust: true,
     pixelRatio: 2,
     backgroundColor: "transparent",
   });
+  if (!blob) {
+    alert("Failed to render the image.");
+    return null;
+  }
+  return blob;
+}
 
-  const link = document.createElement("a");
-  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-  link.download = `mood-card-${stamp}.png`;
-  link.href = dataUrl;
-  link.click();
+async function shareResCard() {
+  try {
+    const blob = await captureResCardBlob();
+    if (!blob) return;
+
+    const file = new File([blob], `mood-card-${Date.now()}.png`, {
+      type: "image/png",
+    });
+
+    // 1) Best: Web Share Level 2 with files
+    if (
+      typeof navigator !== "undefined" &&
+      "canShare" in navigator &&
+      navigator.canShare?.({ files: [file] })
+    ) {
+      await navigator.share({
+        title: "My August Mood",
+        text: "Check out my August mood card!",
+        files: [file],
+      });
+      return;
+    }
+
+    // 2) Fallback: copy image blob to clipboard (secure contexts only)
+    if (
+      typeof navigator !== "undefined" &&
+      "clipboard" in navigator &&
+      typeof ClipboardItem !== "undefined"
+    ) {
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": blob }),
+      ]);
+      alert("Image copied to clipboard! Paste it into your app.");
+      return;
+    }
+
+    // 3) Last resort: download the image
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const moodName = document.querySelector('[data-mood]')?.getAttribute('data-mood') || 'unknown';
+    a.download = `myAugustMood.${moodName}.png`;
+    a.click();
+    URL.revokeObjectURL(url);
+    alert("We downloaded the image since your browser can't share it directly.");
+  } catch (err) {
+    console.error("Error sharing:", err);
+    alert("Failed to share. Try downloading instead.");
+  }
+}
+
+async function downloadResCard() {
+  const blob = await captureResCardBlob();
+  if (!blob) return;
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  const moodName = document.querySelector('[data-mood]')?.getAttribute('data-mood') || 'unknown';
+  a.download = `myAugustMood.${moodName}.png`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 export default function ResultActions() {
@@ -42,7 +104,7 @@ export default function ResultActions() {
         </GlassButton>
 
         <GlassButton
-          onClick={() => setShowRating(true)}
+          onClick={shareResCard}
           className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm flex items-center justify-center"
         >
           <Star className="w-4 h-4 mr-2" />
@@ -56,14 +118,13 @@ export default function ResultActions() {
           <Download className="w-4 h-4 mr-2" />
           Download
         </GlassButton>
-
-        
+      </div>
 
       {showRating && (
         <RatingPopup isOpen={showRating} onClose={() => setShowRating(false)} />
       )}
-    </div>
-    <div className="flex flex-row gap-3 mt-4">
+
+      <div className="flex flex-row gap-3 mt-4">
         <GlassButton
           onClick={() => router.push("/gallery")}
           className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm col-start-2 flex items-center justify-center"
@@ -80,6 +141,6 @@ export default function ResultActions() {
           Rate
         </GlassButton>
       </div>
-      </div>
+    </div>
   );
 }
