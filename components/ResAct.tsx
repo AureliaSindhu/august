@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Star, RotateCcw, FolderOpen, Download } from "lucide-react";
+import { Star, RotateCcw, FolderOpen, Download, Share2 } from "lucide-react";
 import GlassButton from "./ui/glassBtn";
 import RatingPopup from "./RatingPopup";
 
@@ -93,8 +93,8 @@ export default function ResultActions() {
   const [showRating, setShowRating] = useState(false);
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="gap-3 flex flex-row -max-w-md w-full">
+    <div className="flex flex-col items-center justify-center w-full px-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full max-w-md">
         <GlassButton
           onClick={() => router.push("/")}
           className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm flex items-center justify-center"
@@ -107,13 +107,13 @@ export default function ResultActions() {
           onClick={shareResCard}
           className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm flex items-center justify-center"
         >
-          <Star className="w-4 h-4 mr-2" />
+          <Share2 className="w-4 h-4 mr-2" />
           Share
         </GlassButton>
 
         <GlassButton
           onClick={downloadResCard}
-          className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm flex items-center justify-center"
+          className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm flex items-center justify-center col-span-2 sm:col-span-1"
         >
           <Download className="w-4 h-4 mr-2" />
           Download
@@ -124,10 +124,10 @@ export default function ResultActions() {
         <RatingPopup isOpen={showRating} onClose={() => setShowRating(false)} />
       )}
 
-      <div className="flex flex-row gap-3 mt-4">
+      <div className="grid grid-cols-2 gap-3 mt-4 w-full max-w-md">
         <GlassButton
           onClick={() => router.push("/gallery")}
-          className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm col-start-2 flex items-center justify-center"
+          className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm flex items-center justify-center"
         >
           <FolderOpen className="w-4 h-4 mr-2" />
           Gallery
