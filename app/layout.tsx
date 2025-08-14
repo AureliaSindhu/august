@@ -9,7 +9,7 @@ const imFellDW = IM_Fell_DW_Pica({
 });
 
 export const metadata: Metadata = {
-  title: "my august mood",
+  title: "#myAugustMood",
   description: "a moodboard for my august, play august by Taylor Swift",
 };
 
