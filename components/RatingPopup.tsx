@@ -154,17 +154,17 @@ export default function RatingPopup({ isOpen, onClose }: RatingPopupProps) {
         </div>
 
         {/* Submit button */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 text-center items-center justify-center">
           <GlassButton
             onClick={onClose}
-            className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white hover:bg-white/10"
+            className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white hover:bg-white/10 text-center flex items-center justify-center"
           >
             Cancel
           </GlassButton>
           <GlassButton
             onClick={handleSubmit}
             disabled={rating === 0 || isSubmitting}
-            className="flex-1 px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed text-center flex items-center justify-center"
           >
             {isSubmitting ? "Submitting..." : "Submit Rating"}
           </GlassButton>
