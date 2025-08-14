@@ -1,1 +1,1 @@
-coming soon: my august mood 𓍯𓂃
+let's find [my august mood](august-gorw.vercel.app) 𓍯𓂃
