@@ -4,7 +4,16 @@ import Background from "@/components/ui/background";
 import ResCard from "@/components/ResCard";
 import ResultActions from "@/components/ResAct";
 
-export default function Mood() {
+type Props = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function Mood({ searchParams }: Props) {
+  const mood = await searchParams;
+  console.log(mood);
+
+  const q = mood ? `?mood=${mood}` : "";
+
   return (
     <div className="bg-black min-h-screen">
       <Background>
