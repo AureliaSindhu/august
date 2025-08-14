@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IM_Fell_DW_Pica } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
 
 const imFellDW = IM_Fell_DW_Pica({
   variable: "--font-im-fell-dw",
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${imFellDW.variable} antialiased`}>{children}</body>
+      <body className={`${imFellDW.variable} antialiased`}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
