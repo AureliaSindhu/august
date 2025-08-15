@@ -1,1 +1,1 @@
-let's find [my august mood](august-gorw.vercel.app) 𓍯𓂃
+let's find [my august mood](https://august.aureliasindhu.com/) 𓍯𓂃
